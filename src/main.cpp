@@ -7,90 +7,86 @@
 #include <iostream>
 #include <thread>
 
-int main()
-{
-    // Set the rand seed
-    srand(time(NULL));
-    bool gameover = false, turnend = false;
-    int foemind[3] = { 0 };
-    int turn = 0;
-
+class Game {
+    int m_turn_number;
     Hand hand, foe_hand;
-    const std::string pales[4] = { "spades", "clubs", "diamonds", "hearts" };
+    int foemind[3] = { 0, 0, 0 };
 
-    while (hand.getSize() < MAX_HAND_SIZE - 1) {
-        hand.draw();
-    }
-    while (foe_hand.getSize() < MAX_HAND_SIZE - 1) {
-        foe_hand.draw(true);
-    }
-
-    // Game loop
-    while (gameover != true) {
-        if (turn == 0) {
-            std::cout << "Start!" << std::endl;
+public:
+    Game()
+        : m_turn_number(0)
+    {
+        srand(time(NULL));
+        while (hand.getSize() < MAX_HAND_SIZE - 1) {
+            hand.draw();
         }
-        if (!gameover) {
-            turn++;
-            std::cout << std::endl
-                      << std::endl;
-            std::cout << "Turn " << turn << "." << std::endl;
-            turnend = false;
+        while (foe_hand.getSize() < MAX_HAND_SIZE - 1) {
+            foe_hand.draw(true);
         }
-
-        // Draw cards
+        std::cout << "Start!" << std::endl;
+    }
+    void nextTurn()
+    {
+        m_turn_number++;
+        std::cout << std::endl
+                  << std::endl;
+        std::cout << "Turn " << m_turn_number << "." << std::endl;
         while (hand.getSize() < MAX_HAND_SIZE) {
             hand.draw();
         }
         while (foe_hand.getSize() < MAX_HAND_SIZE) {
             foe_hand.draw(true);
         }
-
-        // Print hand
         hand.print();
-
-        // Prompt for which card to discard
-        while (hand.getSize() >= MAX_HAND_SIZE) {
-            int decision = -1;
-            std::cout << "Discard 1 card." << std::endl;
-            while (!(std::cin >> decision) || (decision < 1 || decision > MAX_HAND_SIZE)) {
+    }
+    void executeTurn()
+    {
+        std::cout << "Discard 1 card." << std::endl;
+        int decision = -1;
+        while (true) {
+            if ((std::cin >> decision) && decision >= 1 && decision <= MAX_HAND_SIZE) {
+                break;
+            } else {
                 std::cout << "Please enter a valid number (numbers between 1 and 6)." << std::endl;
             }
+        }
 
-            // Store discarded card to foe's memory
-            for (int i = 0; i < 3; i++) {
-                if (foemind[i] == 0) {
-                    foemind[i] = 6; // TODO: Update AI. hand[decision - 1].number;
-                    break;
-                }
+        // Store discarded card to foe's memory
+        for (int i = 0; i < 3; i++) {
+            if (foemind[i] == 0) {
+                foemind[i] = 6; // TODO: Update AI. hand[decision - 1].number;
+                break;
             }
-
-            // Delete card
-            hand.discard(decision - 1);
         }
 
-        // Choose what card should foe discard
-        while (foe_hand.getSize() >= MAX_HAND_SIZE) {
-            int foedecision = AI::chooseCardToDiscard(foe_hand.getArray());
-            foe_hand.discard(foedecision - 1, true);
-        }
+        // Delete card
+        hand.discard(decision - 1);
 
-        // Check for winning conditions
+        int foedecision = AI::chooseCardToDiscard(foe_hand.getArray());
+        foe_hand.discard(foedecision - 1, true);
+    }
+    bool isGameOver()
+    {
         std::pair<bool, int> game_outcome = checkWinningConditions(hand, foe_hand);
         if (game_outcome.first) {
-            gameover = true;
             switch (game_outcome.second) {
             case -1:
-                std::cout << "You lost!";
+                std::cout << "You lost!" << std::endl;
                 break;
             case 0:
-                std::cout << "It's a tie!";
+                std::cout << "It's a tie!" << std::endl;
                 break;
             case 1:
-                std::cout << "You won!";
+                std::cout << "You won!" << std::endl;
                 break;
             }
-        } else if (turn % 3 == 0 && turn > 0) {
+            return true;
+        }
+        return false;
+    }
+    void checkDiscardRound()
+    {
+        if (m_turn_number % 3 == 0 && m_turn_number > 0) {
             int discardnumber;
             std::cout << "Time to discard!" << std::endl;
             while (true) {
@@ -103,8 +99,10 @@ int main()
                     std::cout << "Please enter a valid number (numbers between 1 and 13)." << std::endl;
                 }
             }
+
             int foediscardnumber = AI::chooseNumberToDeclare(foemind);
             std::cout << "Your opponent has chosen the number " << foediscardnumber << "." << std::endl;
+
             hand.discardAllByNumber(foediscardnumber);
             if (hand.getSize() == 5) {
                 std::cout << "You don't have any " << foediscardnumber << " in your hand." << std::endl;
@@ -115,6 +113,19 @@ int main()
                 std::cout << "Your opponent doesn't have any " << discardnumber << " in his hand." << std::endl;
             }
         }
+    }
+};
+
+int main()
+{
+    Game game;
+    while (true) {
+        game.nextTurn();
+        game.executeTurn();
+        if (game.isGameOver()) {
+            break;
+        }
+        game.checkDiscardRound();
     }
     return 0;
 }

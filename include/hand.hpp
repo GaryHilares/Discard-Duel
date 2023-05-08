@@ -2,6 +2,7 @@
 #define HAND_HPP
 #include "./card.hpp"
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 
 constexpr int MAX_HAND_SIZE = 6;
@@ -59,11 +60,8 @@ public:
             temporal_hand[i] = hand[i];
         }
         std::sort(std::begin(temporal_hand), std::end(temporal_hand));
-        if (temporal_hand[0].number == 0) {
-            return false;
-        }
-        for (int i = 1; i < MAX_HAND_SIZE; i++) {
-            if (temporal_hand[i] != temporal_hand[i - 1]) {
+        for (int i = 2; i < MAX_HAND_SIZE; i++) {
+            if (temporal_hand[i].number != temporal_hand[i - 1].number + 1) {
                 return false;
             }
         }
