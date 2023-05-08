@@ -27,4 +27,4 @@ In UNIX systems, run `./build.sh` to build the game. If your compiler is not g++
 In Windows, you can copy the first part of the command in `./build.sh` into your command prompt or build it manually in other way.
 
 ## License
-All the code owned in this repository is under the [MIT license](https://github.com/GaryHilares/Discard-Duel/blob/main/LICENSE).
+This work is licensed under a [Creative Commons Attribution 4.0 International License](https://github.com/GaryHilares/Discard-Duel/blob/main/LICENSE).
