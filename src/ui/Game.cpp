@@ -39,7 +39,7 @@ void Game::nextTurn()
     std::cout << "Turn " << m_turn_number << "." << std::endl;
     while (m_player.getHandRef().getSize() < MAX_HAND_SIZE) {
         Card card_drawn = m_player.getHandRef().draw();
-        std::cout << "Drew " << card_drawn.getNumber() << " of " << card_drawn.getPale() << "." << std::endl;
+        std::cout << "Drew " << card_drawn << "." << std::endl;
     }
     while (m_opponent.getHandRef().getSize() < MAX_HAND_SIZE) {
         m_opponent.getHandRef().draw();
