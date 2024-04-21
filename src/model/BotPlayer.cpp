@@ -17,12 +17,13 @@ void BotPlayer::rememberOpponentChoice(int discarded_number)
     }
 }
 
-int BotPlayer::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand) const
+int BotPlayer::chooseCardToDiscard() const
 {
+    const std::array<Card, MAX_HAND_SIZE> hand = m_hand.getArray();
     // Check for repeated cards and discards them first
-    for (int i = 1; i <= foe_hand.size(); i++) {
-        for (int j = i + 1; j <= foe_hand.size(); j++) {
-            if (foe_hand[i - 1].getNumber() == foe_hand[j - 1].getNumber()) {
+    for (int i = 1; i <= hand.size(); i++) {
+        for (int j = i + 1; j <= hand.size(); j++) {
+            if (hand[i - 1].getNumber() == hand[j - 1].getNumber()) {
                 return j;
             }
         }
@@ -31,7 +32,7 @@ int BotPlayer::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_han
     // Find average value
     int average = 0;
     for (int i = 0; i < 6; i++) {
-        average += foe_hand[i].getNumber();
+        average += hand[i].getNumber();
     }
     average = round((float)average / 6);
 
@@ -39,7 +40,7 @@ int BotPlayer::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_han
     int maximum_difference = -1;
     int index = -1;
     for (int i = 0; i < 6; i++) {
-        int difference = abs(foe_hand[i].getNumber() - average);
+        int difference = abs(hand[i].getNumber() - average);
         if (difference >= maximum_difference) {
             maximum_difference = difference;
             index = i;

@@ -9,9 +9,27 @@ private:
     std::array<int, BotPlayer::MEMORY_SIZE> m_memory;
 
 public:
+    /**
+     * EFFECTS: Creates a new BotPlayer with empty memory and hand.
+     */
     BotPlayer();
+
+    /**
+     * REQUIRES: 1 <= discarded_number <= 13
+     * MODIFIES: this
+     * EFFECTS: Records the opponent choice, which will be taken into account for future choices.
+     */
     void rememberOpponentChoice(int discarded_number);
-    int chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand) const;
+
+    /**
+     * EFFECTS: Produces the bot's choice of card to discard.
+     */
+    int chooseCardToDiscard() const;
+
+    /**
+     * MODIFIES: this
+     * EFFECTS: Produces the bot's choice of number to declare during the discard round.
+     */
     int chooseNumberToDeclare();
 };
 

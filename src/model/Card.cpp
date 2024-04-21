@@ -34,6 +34,9 @@ std::string Card::getPale() const
 
 std::ostream& operator<<(std::ostream& out, const Card& card)
 {
+    if (card.getNumber() == 0 || card.getPale() == "") {
+        return out << "None";
+    }
     return out << card.getNumber() << " of " << card.getPale();
 }
 

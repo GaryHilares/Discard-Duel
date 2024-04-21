@@ -33,7 +33,7 @@ std::ostream& operator<<(std::ostream& out, const Hand& hand)
     return out;
 }
 
-Card Hand::discard(int index, bool is_oponent)
+Card Hand::discard(int index)
 {
     Card tmp = hand[index];
     hand[index] = { "", 0 };
@@ -53,18 +53,18 @@ bool Hand::isStraight() const
     return true;
 }
 
-std::vector<Card> Hand::discardAllByNumber(int number, bool is_oponent)
+std::vector<Card> Hand::discardAllByNumber(int number)
 {
     std::vector<Card> ret;
     for (int i = 0; i < MAX_HAND_SIZE; i++) {
         if (hand[i].getNumber() == number) {
-            ret.push_back(discard(i, is_oponent));
+            ret.push_back(discard(i));
         }
     }
     return ret;
 }
 
-std::array<Card, MAX_HAND_SIZE> Hand::getArray()
+std::array<Card, MAX_HAND_SIZE> Hand::getArray() const
 {
     return hand;
 }

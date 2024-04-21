@@ -30,7 +30,7 @@ int Game::nextTurnNumber()
     return ++m_turn_number;
 }
 
-bool Game::isDiscardRound()
+bool Game::isDiscardRound() const
 {
     return m_turn_number % 3 == 0 && m_turn_number > 0;
 }

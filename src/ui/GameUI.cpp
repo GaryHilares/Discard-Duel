@@ -45,12 +45,12 @@ void GameUI::executeTurn()
     // Store discarded card to foe's memory
     m_game.getBotPlayerRef().rememberOpponentChoice(discarded_card.getNumber());
 
-    int foedecision = m_game.getBotPlayerRef().chooseCardToDiscard(m_game.getBotPlayerRef().getHandRef().getArray());
-    Card opponent_discarded_card = m_game.getBotPlayerRef().getHandRef().discard(foedecision - 1, true);
+    int foedecision = m_game.getBotPlayerRef().chooseCardToDiscard();
+    Card opponent_discarded_card = m_game.getBotPlayerRef().getHandRef().discard(foedecision - 1);
     std::cout << "Your opponent discarded a " << opponent_discarded_card << "." << std::endl;
 }
 
-bool GameUI::isGameOver()
+bool GameUI::isGameOver() const
 {
     std::pair<bool, int> game_outcome = m_game.checkWinningConditions();
     if (game_outcome.first) {
@@ -87,7 +87,7 @@ void GameUI::checkDiscardRound()
             std::cout << "You don't have any " << foediscardnumber << " in your hand." << std::endl;
         }
 
-        const std::vector<Card>& opponent_discarded_cards = m_game.getBotPlayerRef().getHandRef().discardAllByNumber(discardnumber, true);
+        const std::vector<Card>& opponent_discarded_cards = m_game.getBotPlayerRef().getHandRef().discardAllByNumber(discardnumber);
         for (const Card& card : opponent_discarded_cards) {
             std::cout << "Your opponent discarded " << card << "." << std::endl;
         }
