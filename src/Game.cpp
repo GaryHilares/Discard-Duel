@@ -1,4 +1,4 @@
-#include "../include/game.hpp"
+#include "../include/Game.hpp"
 
 std::pair<bool, int> checkWinningConditions(const Hand player_hand, const Hand foe_hand)
 {

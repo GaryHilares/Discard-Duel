@@ -1,3 +1,3 @@
 #!/bin/bash
 mkdir build
-g++ -o build/discard-duel -lstdc++ src/Bot.cpp src/Card.cpp src/game.cpp src/main.cpp
+g++ -o build/discard-duel -lstdc++ src/Bot.cpp src/Card.cpp src/Game.cpp src/main.cpp
