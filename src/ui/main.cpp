@@ -2,6 +2,7 @@
 
 int main()
 {
+    srand(time(NULL));
     GameUI game;
     while (true) {
         game.nextTurn();

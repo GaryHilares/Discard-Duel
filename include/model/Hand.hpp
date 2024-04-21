@@ -20,6 +20,7 @@ public:
     bool isStraight() const;
     std::vector<Card> discardAllByNumber(int number, bool is_oponent = false);
     std::array<Card, MAX_HAND_SIZE> getArray();
+    std::vector<Card> drawUntilFull();
     friend std::ostream& operator<<(std::ostream& out, const Hand& hand);
 };
 

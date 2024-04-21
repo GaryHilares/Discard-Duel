@@ -3,13 +3,12 @@
 
 GameUI::GameUI()
 {
-    srand(time(NULL));
-    while (m_game.getPlayerRef().getHandRef().getSize() < MAX_HAND_SIZE - 1) {
-        Card card_drawn = m_game.getPlayerRef().getHandRef().draw();
-        std::cout << "Drew " << card_drawn << "." << std::endl;
+    std::vector<Card> cards_drawn = m_game.getPlayerRef().getHandRef().drawUntilFull();
+    for (Card card : cards_drawn) {
+        std::cout << "Drew " << card << "." << std::endl;
     }
-    while (m_game.getBotPlayerRef().getHandRef().getSize() < MAX_HAND_SIZE - 1) {
-        m_game.getBotPlayerRef().getHandRef().draw();
+    std::vector<Card> opponent_cards_drawn = m_game.getPlayerRef().getHandRef().drawUntilFull();
+    for (Card card : opponent_cards_drawn) {
         std::cout << "Your opponent drew a card." << std::endl;
     }
     std::cout << "Start!" << std::endl;
@@ -20,15 +19,18 @@ void GameUI::nextTurn()
     std::cout << std::endl
               << std::endl;
     std::cout << "Turn " << m_game.nextTurnNumber() << "." << std::endl;
-    while (m_game.getPlayerRef().getHandRef().getSize() < MAX_HAND_SIZE) {
-        Card card_drawn = m_game.getPlayerRef().getHandRef().draw();
-        std::cout << "Drew " << card_drawn << "." << std::endl;
+
+    std::vector<Card> cards_drawn = m_game.getPlayerRef().getHandRef().drawUntilFull();
+    for (Card card : cards_drawn) {
+        std::cout << "Drew " << card << "." << std::endl;
     }
-    while (m_game.getBotPlayerRef().getHandRef().getSize() < MAX_HAND_SIZE) {
-        m_game.getBotPlayerRef().getHandRef().draw();
+
+    std::vector<Card> opponent_cards_drawn = m_game.getPlayerRef().getHandRef().drawUntilFull();
+    for (Card card : opponent_cards_drawn) {
         std::cout << "Your opponent drew a card." << std::endl;
     }
-    std::cout << m_game.getPlayerRef().getHandRef() << std::flush;
+
+    std::cout << m_game.getConstPlayerRef().getConstHandRef() << std::flush;
 }
 
 void GameUI::executeTurn()

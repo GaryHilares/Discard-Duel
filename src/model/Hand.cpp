@@ -68,3 +68,12 @@ std::array<Card, MAX_HAND_SIZE> Hand::getArray()
 {
     return hand;
 }
+
+std::vector<Card> Hand::drawUntilFull()
+{
+    std::vector<Card> ret;
+    while (getSize() < MAX_HAND_SIZE) {
+        ret.push_back(draw());
+    }
+    return ret;
+}
