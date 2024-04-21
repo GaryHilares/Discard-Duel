@@ -39,20 +39,16 @@ void Game::executeTurn()
         }
     }
 
-    // Store discarded card to foe's memory
-    for (int i = 0; i < 3; i++) {
-        if (foemind[i] == 0) {
-            foemind[i] = 6; // TODO: Update AI. hand[decision - 1].number;
-            break;
-        }
-    }
-
     // Delete card
-    hand.discard(decision - 1);
+    Card discarded_card = hand.discard(decision - 1);
+
+    // Store discarded card to foe's memory
+    m_foe_mind.rememberOpponentChoice(discarded_card.number);
 
     int foedecision = Bot::chooseCardToDiscard(foe_hand.getArray());
     foe_hand.discard(foedecision - 1, true);
 }
+
 bool Game::isGameOver()
 {
     std::pair<bool, int> game_outcome = checkWinningConditions(hand, foe_hand);
@@ -88,7 +84,7 @@ void Game::checkDiscardRound()
             }
         }
 
-        int foediscardnumber = Bot::chooseNumberToDeclare(foemind);
+        int foediscardnumber = m_foe_mind.chooseNumberToDeclare();
         std::cout << "Your opponent has chosen the number " << foediscardnumber << "." << std::endl;
 
         hand.discardAllByNumber(foediscardnumber);

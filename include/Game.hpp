@@ -10,7 +10,7 @@ std::pair<bool, int> checkWinningConditions(const Hand player_hand, const Hand f
 class Game {
     int m_turn_number;
     Hand hand, foe_hand;
-    int foemind[3] = { 0, 0, 0 };
+    Bot m_foe_mind;
 
 public:
     Game();

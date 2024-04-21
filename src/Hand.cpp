@@ -35,14 +35,16 @@ void Hand::print() const
     }
 }
 
-void Hand::discard(int index, bool is_oponent)
+Card Hand::discard(int index, bool is_oponent)
 {
     if (!is_oponent) {
         std::cout << "Discarded " << hand[index].number << " of " << hand[index].pale << "." << std::endl;
     } else {
         std::cout << "Your opponent discarded a " << hand[index].number << " of " << hand[index].pale << "." << std::endl;
     }
+    Card tmp = hand[index];
     hand[index] = { "", 0 };
+    return tmp;
 }
 
 bool Hand::isStraight() const

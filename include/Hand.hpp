@@ -15,7 +15,7 @@ public:
     void draw(bool is_opponent = false);
     int getSize() const;
     void print() const;
-    void discard(int index, bool is_oponent = false);
+    Card discard(int index, bool is_oponent = false);
     bool isStraight() const;
     void discardAllByNumber(int number, bool is_oponent = false);
     Card* getArray();

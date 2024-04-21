@@ -1,6 +1,16 @@
 #include "../include/Bot.hpp"
 #include <cmath>
 
+void Bot::rememberOpponentChoice(int discarded_number)
+{
+    for (int i = 0; i < 3; i++) {
+        if (m_memory[i] == 0) {
+            m_memory[i] = discarded_number; // TODO: Update AI. hand[decision - 1].number;
+            break;
+        }
+    }
+}
+
 int Bot::chooseCardToDiscard(const Card foe_hand[6])
 {
     // Check for repeated cards and discards them first
@@ -33,12 +43,12 @@ int Bot::chooseCardToDiscard(const Card foe_hand[6])
     return index + 1;
 }
 
-int Bot::chooseNumberToDeclare(int foe_memory[3])
+int Bot::chooseNumberToDeclare()
 {
     int average = 0;
     for (int i = 0; i <= 2; i++) {
-        average += foe_memory[i];
-        foe_memory[i] = 0;
+        average += m_memory[i];
+        m_memory[i] = 0;
     }
     return 13 - average / 3;
 }
