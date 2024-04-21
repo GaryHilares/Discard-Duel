@@ -1,5 +1,6 @@
 #ifndef CARD_HPP
 #define CARD_HPP
+#include <ostream>
 #include <string>
 
 class Card {
@@ -15,6 +16,8 @@ public:
     int getNumber() const;
     std::string getPale() const;
 };
+
+std::ostream& operator<<(std::ostream& out, const Card& card);
 
 Card getRandomCard();
 

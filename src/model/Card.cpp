@@ -32,6 +32,11 @@ std::string Card::getPale() const
     return pale;
 }
 
+std::ostream& operator<<(std::ostream& out, const Card& card)
+{
+    return out << card.getNumber() << " of " << card.getPale();
+}
+
 Card getRandomCard()
 {
     const std::string pales[4] = { "spades", "clubs", "diamonds", "hearts" };

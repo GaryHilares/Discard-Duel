@@ -7,7 +7,7 @@ Game::Game()
     srand(time(NULL));
     while (hand.getSize() < MAX_HAND_SIZE - 1) {
         Card card_drawn = hand.draw();
-        std::cout << "Drew " << card_drawn.getNumber() << " of " << card_drawn.getPale() << "." << std::endl;
+        std::cout << "Drew " << card_drawn << "." << std::endl;
     }
     while (foe_hand.getSize() < MAX_HAND_SIZE - 1) {
         foe_hand.draw();
@@ -47,14 +47,14 @@ void Game::executeTurn()
 
     // Delete card
     Card discarded_card = hand.discard(decision - 1);
-    std::cout << "Discarded " << discarded_card.getNumber() << " of " << discarded_card.getPale() << "." << std::endl;
+    std::cout << "Discarded " << discarded_card << "." << std::endl;
 
     // Store discarded card to foe's memory
     m_foe_mind.rememberOpponentChoice(discarded_card.getNumber());
 
     int foedecision = m_foe_mind.chooseCardToDiscard(foe_hand.getArray());
     Card opponent_discarded_card = foe_hand.discard(foedecision - 1, true);
-    std::cout << "Your opponent discarded a " << opponent_discarded_card.getNumber() << " of " << opponent_discarded_card.getPale() << "." << std::endl;
+    std::cout << "Your opponent discarded a " << opponent_discarded_card << "." << std::endl;
 }
 
 bool Game::isGameOver()
@@ -96,14 +96,14 @@ void Game::checkDiscardRound()
         std::cout << "Your opponent has chosen the number " << foediscardnumber << "." << std::endl;
 
         for (const Card& card : hand.discardAllByNumber(foediscardnumber)) {
-            std::cout << "Discarded " << card.getNumber() << " of " << card.getPale() << "." << std::endl;
+            std::cout << "Discarded " << card << "." << std::endl;
         }
         if (hand.getSize() == 5) {
             std::cout << "You don't have any " << foediscardnumber << " in your hand." << std::endl;
         }
 
         for (const Card& card : foe_hand.discardAllByNumber(discardnumber, true)) {
-            std::cout << "Your opponent discarded " << card.getNumber() << " of " << card.getPale() << "." << std::endl;
+            std::cout << "Your opponent discarded " << card << "." << std::endl;
         }
         if (foe_hand.getSize() == 5) {
             std::cout << "Your opponent doesn't have any " << discardnumber << " in his hand." << std::endl;
