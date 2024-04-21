@@ -3,17 +3,32 @@
 
 Game::Game()
     : m_turn_number(0)
+    , m_player("Player")
 {
     srand(time(NULL));
-    while (hand.getSize() < MAX_HAND_SIZE - 1) {
-        Card card_drawn = hand.draw();
+    while (m_player.getHandRef().getSize() < MAX_HAND_SIZE - 1) {
+        Card card_drawn = m_player.getHandRef().draw();
         std::cout << "Drew " << card_drawn << "." << std::endl;
     }
-    while (foe_hand.getSize() < MAX_HAND_SIZE - 1) {
-        foe_hand.draw();
+    while (m_opponent.getHandRef().getSize() < MAX_HAND_SIZE - 1) {
+        m_opponent.getHandRef().draw();
         std::cout << "Your opponent drew a card." << std::endl;
     }
     std::cout << "Start!" << std::endl;
+}
+
+std::pair<bool, int> Game::checkWinningConditions() const
+{
+    bool player_win = m_player.getConstHandRef().isStraight();
+    bool foe_win = m_opponent.getConstHandRef().isStraight();
+    if (player_win && foe_win) {
+        return { true, 0 };
+    } else if (player_win) {
+        return { true, 1 };
+    } else if (foe_win) {
+        return { true, -1 };
+    }
+    return { false, 0 };
 }
 
 void Game::nextTurn()
@@ -22,44 +37,37 @@ void Game::nextTurn()
     std::cout << std::endl
               << std::endl;
     std::cout << "Turn " << m_turn_number << "." << std::endl;
-    while (hand.getSize() < MAX_HAND_SIZE) {
-        Card card_drawn = hand.draw();
+    while (m_player.getHandRef().getSize() < MAX_HAND_SIZE) {
+        Card card_drawn = m_player.getHandRef().draw();
         std::cout << "Drew " << card_drawn.getNumber() << " of " << card_drawn.getPale() << "." << std::endl;
     }
-    while (foe_hand.getSize() < MAX_HAND_SIZE) {
-        foe_hand.draw();
+    while (m_opponent.getHandRef().getSize() < MAX_HAND_SIZE) {
+        m_opponent.getHandRef().draw();
         std::cout << "Your opponent drew a card." << std::endl;
     }
-    std::cout << hand << std::flush;
+    std::cout << m_player.getHandRef() << std::flush;
 }
 
 void Game::executeTurn()
 {
     std::cout << "Discard 1 card." << std::endl;
-    int decision = -1;
-    while (true) {
-        if ((std::cin >> decision) && decision >= 1 && decision <= MAX_HAND_SIZE) {
-            break;
-        } else {
-            std::cout << "Please enter a valid number (numbers between 1 and 6)." << std::endl;
-        }
-    }
+    int decision = inputNumberInRange(1, MAX_HAND_SIZE);
 
     // Delete card
-    Card discarded_card = hand.discard(decision - 1);
+    Card discarded_card = m_player.getHandRef().discard(decision - 1);
     std::cout << "Discarded " << discarded_card << "." << std::endl;
 
     // Store discarded card to foe's memory
-    m_foe_mind.rememberOpponentChoice(discarded_card.getNumber());
+    m_opponent.rememberOpponentChoice(discarded_card.getNumber());
 
-    int foedecision = m_foe_mind.chooseCardToDiscard(foe_hand.getArray());
-    Card opponent_discarded_card = foe_hand.discard(foedecision - 1, true);
+    int foedecision = m_opponent.chooseCardToDiscard(m_opponent.getHandRef().getArray());
+    Card opponent_discarded_card = m_opponent.getHandRef().discard(foedecision - 1, true);
     std::cout << "Your opponent discarded a " << opponent_discarded_card << "." << std::endl;
 }
 
 bool Game::isGameOver()
 {
-    std::pair<bool, int> game_outcome = checkWinningConditions(hand, foe_hand);
+    std::pair<bool, int> game_outcome = checkWinningConditions();
     if (game_outcome.first) {
         switch (game_outcome.second) {
         case -1:
@@ -76,51 +84,50 @@ bool Game::isGameOver()
     }
     return false;
 }
+
+bool Game::isDiscardRound()
+{
+    return m_turn_number % 3 == 0 && m_turn_number > 0;
+}
+
 void Game::checkDiscardRound()
 {
-    if (m_turn_number % 3 == 0 && m_turn_number > 0) {
-        int discardnumber;
+    if (isDiscardRound()) {
         std::cout << "Time to discard!" << std::endl;
-        while (true) {
-            std::cin >> discardnumber;
-            if (discardnumber >= 1 && discardnumber <= 13) {
-                break;
-            } else {
-                std::cin.clear();
-                std::cin.ignore(10000000, '\n');
-                std::cout << "Please enter a valid number (numbers between 1 and 13)." << std::endl;
-            }
-        }
+        int discardnumber = inputNumberInRange(1, 13);
 
-        int foediscardnumber = m_foe_mind.chooseNumberToDeclare();
+        int foediscardnumber = m_opponent.chooseNumberToDeclare();
         std::cout << "Your opponent has chosen the number " << foediscardnumber << "." << std::endl;
 
-        for (const Card& card : hand.discardAllByNumber(foediscardnumber)) {
+        const std::vector<Card>& discarded_cards = m_player.getHandRef().discardAllByNumber(foediscardnumber);
+        for (const Card& card : discarded_cards) {
             std::cout << "Discarded " << card << "." << std::endl;
         }
-        if (hand.getSize() == 5) {
+        if (discarded_cards.size() == 0) {
             std::cout << "You don't have any " << foediscardnumber << " in your hand." << std::endl;
         }
 
-        for (const Card& card : foe_hand.discardAllByNumber(discardnumber, true)) {
+        const std::vector<Card>& opponent_discarded_cards = m_opponent.getHandRef().discardAllByNumber(discardnumber, true);
+        for (const Card& card : opponent_discarded_cards) {
             std::cout << "Your opponent discarded " << card << "." << std::endl;
         }
-        if (foe_hand.getSize() == 5) {
+        if (opponent_discarded_cards.size() == 0) {
             std::cout << "Your opponent doesn't have any " << discardnumber << " in his hand." << std::endl;
         }
     }
 }
 
-std::pair<bool, int> checkWinningConditions(const Hand player_hand, const Hand foe_hand)
+int Game::inputNumberInRange(int lower, int upper)
 {
-    bool player_win = player_hand.isStraight();
-    bool foe_win = foe_hand.isStraight();
-    if (player_win && foe_win) {
-        return { true, 0 };
-    } else if (player_win) {
-        return { true, 1 };
-    } else if (foe_win) {
-        return { true, -1 };
+    int input = -1;
+    while (true) {
+        std::cin >> input;
+        if (input >= lower && input <= upper) {
+            return input;
+        } else {
+            std::cin.clear();
+            std::cin.ignore(10000000, '\n');
+            std::cout << "Please enter a valid number (numbers between " << lower << " and " << upper << ")." << std::endl;
+        }
     }
-    return { false, 0 };
 }

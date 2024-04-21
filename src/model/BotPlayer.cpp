@@ -1,12 +1,13 @@
-#include "../../include/model/Bot.hpp"
+#include "../../include/model/BotPlayer.hpp"
 #include <cmath>
 
-Bot::Bot()
-    : m_memory({})
+BotPlayer::BotPlayer()
+    : Player("Computer")
+    , m_memory({})
 {
 }
 
-void Bot::rememberOpponentChoice(int discarded_number)
+void BotPlayer::rememberOpponentChoice(int discarded_number)
 {
     for (int i = 0; i < 3; i++) {
         if (m_memory[i] == 0) {
@@ -16,7 +17,7 @@ void Bot::rememberOpponentChoice(int discarded_number)
     }
 }
 
-int Bot::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand)
+int BotPlayer::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand)
 {
     // Check for repeated cards and discards them first
     for (int i = 1; i <= foe_hand.size(); i++) {
@@ -48,7 +49,7 @@ int Bot::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand)
     return index + 1;
 }
 
-int Bot::chooseNumberToDeclare()
+int BotPlayer::chooseNumberToDeclare()
 {
     int average = 0;
     for (int i = 0; i <= 2; i++) {
