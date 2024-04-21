@@ -42,11 +42,9 @@ Card Hand::discard(int index, bool is_oponent)
 
 bool Hand::isStraight() const
 {
-    Card temporal_hand[MAX_HAND_SIZE];
-    for (int i = 0; i < MAX_HAND_SIZE; i++) {
-        temporal_hand[i] = hand[i];
-    }
-    std::sort(std::begin(temporal_hand), std::end(temporal_hand));
+    std::array<Card, MAX_HAND_SIZE> temporal_hand;
+    std::copy(hand.begin(), hand.end(), temporal_hand.begin());
+    std::sort(temporal_hand.begin(), temporal_hand.end());
     for (int i = 2; i < MAX_HAND_SIZE; i++) {
         if (temporal_hand[i].getNumber() != temporal_hand[i - 1].getNumber() + 1) {
             return false;
@@ -66,7 +64,7 @@ std::vector<Card> Hand::discardAllByNumber(int number, bool is_oponent)
     return ret;
 }
 
-Card* Hand::getArray()
+std::array<Card, MAX_HAND_SIZE> Hand::getArray()
 {
     return hand;
 }

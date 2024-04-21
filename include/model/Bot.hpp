@@ -1,13 +1,16 @@
 #ifndef BOT_HPP
 #define BOT_HPP
-#include "./Card.hpp"
+#include "./Hand.hpp"
 
 class Bot {
-    int m_memory[3] = { 0, 0, 0 };
+private:
+    static constexpr int MEMORY_SIZE = 3;
+    std::array<int, Bot::MEMORY_SIZE> m_memory;
 
 public:
+    Bot();
     void rememberOpponentChoice(int discarded_number);
-    int chooseCardToDiscard(const Card foe_hand[6]);
+    int chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand);
     int chooseNumberToDeclare();
 };
 
