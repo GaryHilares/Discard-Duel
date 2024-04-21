@@ -1,4 +1,4 @@
-#include "../include/Hand.hpp"
+#include "../../include/model/Hand.hpp"
 
 void Hand::draw(bool is_opponent)
 {

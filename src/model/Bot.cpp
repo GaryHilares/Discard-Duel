@@ -1,4 +1,4 @@
-#include "../include/Bot.hpp"
+#include "../../include/model/Bot.hpp"
 #include <cmath>
 
 void Bot::rememberOpponentChoice(int discarded_number)

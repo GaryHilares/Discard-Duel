@@ -1,4 +1,4 @@
-#include "../include/Game.hpp"
+#include "../../include/ui/Game.hpp"
 
 Game::Game()
     : m_turn_number(0)

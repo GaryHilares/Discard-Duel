@@ -1,4 +1,4 @@
-#include "../include/Card.hpp"
+#include "../../include/model/Card.hpp"
 
 Card::Card()
 {
