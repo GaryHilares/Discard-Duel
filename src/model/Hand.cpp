@@ -1,17 +1,14 @@
 #include "../../include/model/Hand.hpp"
 
-void Hand::draw(bool is_opponent)
+Card Hand::draw()
 {
     for (int i = 0; i < MAX_HAND_SIZE; i++) {
         if (hand[i].getNumber() == 0) {
             hand[i] = getRandomCard();
-            if (!is_opponent) {
-                std::cout << "Drew " << hand[i].getNumber() << " of " << hand[i].getPale() << "." << std::endl;
-            } else {
-                std::cout << "Your opponent drew a card." << std::endl;
-            }
+            return hand[i];
         }
     }
+    return Card();
 }
 
 int Hand::getSize() const
@@ -25,23 +22,19 @@ int Hand::getSize() const
     return number_of_cards;
 }
 
-void Hand::print() const
+std::ostream& operator<<(std::ostream& out, const Hand& hand)
 {
-    std::cout << "Hand:" << std::endl;
+    out << "Hand:" << std::endl;
     for (int i = 0; i < MAX_HAND_SIZE; i++) {
-        if (hand[i].getNumber() != 0) {
-            std::cout << hand[i].getNumber() << " of " << hand[i].getPale() << std::endl;
+        if (hand.hand[i].getNumber() != 0) {
+            out << hand.hand[i].getNumber() << " of " << hand.hand[i].getPale() << "\n";
         }
     }
+    return out;
 }
 
 Card Hand::discard(int index, bool is_oponent)
 {
-    if (!is_oponent) {
-        std::cout << "Discarded " << hand[index].getNumber() << " of " << hand[index].getPale() << "." << std::endl;
-    } else {
-        std::cout << "Your opponent discarded a " << hand[index].getNumber() << " of " << hand[index].getPale() << "." << std::endl;
-    }
     Card tmp = hand[index];
     hand[index] = { "", 0 };
     return tmp;
@@ -62,13 +55,15 @@ bool Hand::isStraight() const
     return true;
 }
 
-void Hand::discardAllByNumber(int number, bool is_oponent)
+std::vector<Card> Hand::discardAllByNumber(int number, bool is_oponent)
 {
+    std::vector<Card> ret;
     for (int i = 0; i < MAX_HAND_SIZE; i++) {
         if (hand[i].getNumber() == number) {
-            discard(i, is_oponent);
+            ret.push_back(discard(i, is_oponent));
         }
     }
+    return ret;
 }
 
 Card* Hand::getArray()

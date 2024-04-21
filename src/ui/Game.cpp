@@ -1,14 +1,17 @@
 #include "../../include/ui/Game.hpp"
+#include <iostream>
 
 Game::Game()
     : m_turn_number(0)
 {
     srand(time(NULL));
     while (hand.getSize() < MAX_HAND_SIZE - 1) {
-        hand.draw();
+        Card card_drawn = hand.draw();
+        std::cout << "Drew " << card_drawn.getNumber() << " of " << card_drawn.getPale() << "." << std::endl;
     }
     while (foe_hand.getSize() < MAX_HAND_SIZE - 1) {
-        foe_hand.draw(true);
+        foe_hand.draw();
+        std::cout << "Your opponent drew a card." << std::endl;
     }
     std::cout << "Start!" << std::endl;
 }
@@ -20,12 +23,14 @@ void Game::nextTurn()
               << std::endl;
     std::cout << "Turn " << m_turn_number << "." << std::endl;
     while (hand.getSize() < MAX_HAND_SIZE) {
-        hand.draw();
+        Card card_drawn = hand.draw();
+        std::cout << "Drew " << card_drawn.getNumber() << " of " << card_drawn.getPale() << "." << std::endl;
     }
     while (foe_hand.getSize() < MAX_HAND_SIZE) {
-        foe_hand.draw(true);
+        foe_hand.draw();
+        std::cout << "Your opponent drew a card." << std::endl;
     }
-    hand.print();
+    std::cout << hand << std::flush;
 }
 
 void Game::executeTurn()
@@ -42,12 +47,14 @@ void Game::executeTurn()
 
     // Delete card
     Card discarded_card = hand.discard(decision - 1);
+    std::cout << "Discarded " << discarded_card.getNumber() << " of " << discarded_card.getPale() << "." << std::endl;
 
     // Store discarded card to foe's memory
     m_foe_mind.rememberOpponentChoice(discarded_card.getNumber());
 
     int foedecision = m_foe_mind.chooseCardToDiscard(foe_hand.getArray());
-    foe_hand.discard(foedecision - 1, true);
+    Card opponent_discarded_card = foe_hand.discard(foedecision - 1, true);
+    std::cout << "Your opponent discarded a " << opponent_discarded_card.getNumber() << " of " << opponent_discarded_card.getPale() << "." << std::endl;
 }
 
 bool Game::isGameOver()
@@ -88,12 +95,16 @@ void Game::checkDiscardRound()
         int foediscardnumber = m_foe_mind.chooseNumberToDeclare();
         std::cout << "Your opponent has chosen the number " << foediscardnumber << "." << std::endl;
 
-        hand.discardAllByNumber(foediscardnumber);
+        for (const Card& card : hand.discardAllByNumber(foediscardnumber)) {
+            std::cout << "Discarded " << card.getNumber() << " of " << card.getPale() << "." << std::endl;
+        }
         if (hand.getSize() == 5) {
             std::cout << "You don't have any " << foediscardnumber << " in your hand." << std::endl;
         }
 
-        foe_hand.discardAllByNumber(discardnumber, true);
+        for (const Card& card : foe_hand.discardAllByNumber(discardnumber, true)) {
+            std::cout << "Your opponent discarded " << card.getNumber() << " of " << card.getPale() << "." << std::endl;
+        }
         if (foe_hand.getSize() == 5) {
             std::cout << "Your opponent doesn't have any " << discardnumber << " in his hand." << std::endl;
         }
