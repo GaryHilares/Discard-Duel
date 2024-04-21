@@ -6,14 +6,8 @@ class Card {
 public:
     std::string pale;
     int number;
-    bool operator!=(const Card& other)
-    {
-        return this->pale == other.pale && this->number == other.number;
-    }
-    bool operator<(const Card& other)
-    {
-        return this->number < other.number;
-    }
+    bool operator!=(const Card& other);
+    bool operator<(const Card& other);
 };
 
 Card getRandomCard();
