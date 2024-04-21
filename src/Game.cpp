@@ -46,7 +46,7 @@ void Game::executeTurn()
     // Store discarded card to foe's memory
     m_foe_mind.rememberOpponentChoice(discarded_card.getNumber());
 
-    int foedecision = Bot::chooseCardToDiscard(foe_hand.getArray());
+    int foedecision = m_foe_mind.chooseCardToDiscard(foe_hand.getArray());
     foe_hand.discard(foedecision - 1, true);
 }
 

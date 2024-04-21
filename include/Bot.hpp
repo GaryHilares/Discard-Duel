@@ -7,7 +7,7 @@ class Bot {
 
 public:
     void rememberOpponentChoice(int discarded_number);
-    static int chooseCardToDiscard(const Card foe_hand[6]);
+    int chooseCardToDiscard(const Card foe_hand[6]);
     int chooseNumberToDeclare();
 };
 
