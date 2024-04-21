@@ -9,7 +9,7 @@ constexpr int MAX_HAND_SIZE = 6;
 
 class Hand {
 private:
-    Card hand[MAX_HAND_SIZE] = { { "", 0 } };
+    Card hand[MAX_HAND_SIZE];
 
 public:
     void draw(bool is_opponent = false);

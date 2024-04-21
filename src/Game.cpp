@@ -27,6 +27,7 @@ void Game::nextTurn()
     }
     hand.print();
 }
+
 void Game::executeTurn()
 {
     std::cout << "Discard 1 card." << std::endl;
@@ -43,7 +44,7 @@ void Game::executeTurn()
     Card discarded_card = hand.discard(decision - 1);
 
     // Store discarded card to foe's memory
-    m_foe_mind.rememberOpponentChoice(discarded_card.number);
+    m_foe_mind.rememberOpponentChoice(discarded_card.getNumber());
 
     int foedecision = Bot::chooseCardToDiscard(foe_hand.getArray());
     foe_hand.discard(foedecision - 1, true);
