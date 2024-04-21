@@ -17,7 +17,7 @@ void BotPlayer::rememberOpponentChoice(int discarded_number)
     }
 }
 
-int BotPlayer::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand)
+int BotPlayer::chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand) const
 {
     // Check for repeated cards and discards them first
     for (int i = 1; i <= foe_hand.size(); i++) {

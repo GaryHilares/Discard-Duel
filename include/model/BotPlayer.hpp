@@ -11,7 +11,7 @@ private:
 public:
     BotPlayer();
     void rememberOpponentChoice(int discarded_number);
-    int chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand);
+    int chooseCardToDiscard(const std::array<Card, MAX_HAND_SIZE> foe_hand) const;
     int chooseNumberToDeclare();
 };
 
