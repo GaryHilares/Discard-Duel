@@ -1,8 +1,8 @@
-#include "../../include/ui/Game.hpp"
+#include "../../include/ui/GameUI.hpp"
 
 int main()
 {
-    Game game;
+    GameUI game;
     while (true) {
         game.nextTurn();
         game.executeTurn();

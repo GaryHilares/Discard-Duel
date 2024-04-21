@@ -1,5 +1,5 @@
-#ifndef BOT_HPP
-#define BOT_HPP
+#ifndef BOT_PLAYER_HPP
+#define BOT_PLAYER_HPP
 #include "./Hand.hpp"
 #include "./Player.hpp"
 
@@ -15,4 +15,4 @@ public:
     int chooseNumberToDeclare();
 };
 
-#endif // BOT_HPP
+#endif // BOT_PLAYER_HPP

@@ -8,7 +8,7 @@ protected:
     Hand m_hand;
 
 public:
-    Player(std::string name);
+    Player(std::string name = "Player");
     Hand& getHandRef();
     const Hand& getConstHandRef() const;
 };
