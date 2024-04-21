@@ -1,7 +1,7 @@
-#include "../include/bot.hpp"
+#include "../include/Bot.hpp"
 #include <cmath>
 
-int AI::chooseCardToDiscard(const Card foe_hand[6])
+int Bot::chooseCardToDiscard(const Card foe_hand[6])
 {
     // Check for repeated cards and discards them first
     for (int i = 1; i <= 6; i++) {
@@ -33,7 +33,7 @@ int AI::chooseCardToDiscard(const Card foe_hand[6])
     return index + 1;
 }
 
-int AI::chooseNumberToDeclare(int foe_memory[3])
+int Bot::chooseNumberToDeclare(int foe_memory[3])
 {
     int average = 0;
     for (int i = 0; i <= 2; i++) {

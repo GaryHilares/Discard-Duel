@@ -1,8 +1,8 @@
 #ifndef BOT_HPP
 #define BOT_HPP
-#include "./card.hpp"
+#include "./Card.hpp"
 
-namespace AI {
+namespace Bot {
 int chooseCardToDiscard(const Card foe_hand[6]);
 int chooseNumberToDeclare(int foe_memory[3]);
 };

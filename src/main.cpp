@@ -1,7 +1,7 @@
-#include "../include/bot.hpp"
-#include "../include/card.hpp"
+#include "../include/Bot.hpp"
+#include "../include/Card.hpp"
+#include "../include/Hand.hpp"
 #include "../include/game.hpp"
-#include "../include/hand.hpp"
 #include <chrono>
 #include <ctime>
 #include <iostream>
@@ -62,7 +62,7 @@ public:
         // Delete card
         hand.discard(decision - 1);
 
-        int foedecision = AI::chooseCardToDiscard(foe_hand.getArray());
+        int foedecision = Bot::chooseCardToDiscard(foe_hand.getArray());
         foe_hand.discard(foedecision - 1, true);
     }
     bool isGameOver()
@@ -100,7 +100,7 @@ public:
                 }
             }
 
-            int foediscardnumber = AI::chooseNumberToDeclare(foemind);
+            int foediscardnumber = Bot::chooseNumberToDeclare(foemind);
             std::cout << "Your opponent has chosen the number " << foediscardnumber << "." << std::endl;
 
             hand.discardAllByNumber(foediscardnumber);

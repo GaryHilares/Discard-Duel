@@ -1,6 +1,6 @@
 #ifndef HAND_HPP
 #define HAND_HPP
-#include "./card.hpp"
+#include "./Card.hpp"
 #include <algorithm>
 #include <cassert>
 #include <iostream>
